@@ -10,7 +10,7 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
     let path = await vscode.env.clipboard.readText();
     if (path !== undefined)
     {
-        path = path.replace('\\', '/');
+        path = path.replace(/\\/g, '/');
         let config = vscode.workspace.getConfiguration("betterpath");
         let subPath = config.get("packagepath");
         if (subPath !== undefined)
@@ -25,8 +25,7 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
             ignoreExtension = ignoreExtension as boolean;
             if (ignoreExtension)
             {
-                let reg = new RegExp("\\.\\w+");
-                path = path.replace(reg, "");
+                path = path.replace(/\.\w+/g,"")
             }
         }
         vscode.env.clipboard.writeText(path);

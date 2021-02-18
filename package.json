@@ -39,7 +39,7 @@
                 {
                     "command": "extension.copyRelativeFilePath",
                     "when": "explorerResourceIsFolder == false",
-                    "group": "6_copypath@999"
+                    "group": "6_copypath@20"
                 }
             ]
         },
