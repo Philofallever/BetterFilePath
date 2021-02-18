@@ -1,14 +1,15 @@
 {
-	"name": "betterfilepath",
+	"name": "betterfilepathcopy",
     "author": {
         "name": "Fallever"
     },
+    "publisher": "Fallever",
     "repository": {
         "type":"git",
-        "url": ""
+        "url": "https://github.com/Philofallever/BetterFilePathCopy"
     },
-	"displayName": "BetterFilePath",
-	"description": "better copy path",
+	"displayName": "BetterFilePathCopy",
+	"description": "better copy file path",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.53.0"
@@ -50,7 +51,7 @@
         ],
         "configuration":[
             {
-                "title": "betterfilepath",
+                "title": "betterfilepathcopy",
                 "properties": {
                     "betterpath.packagepath":{
                         "type":"string",
