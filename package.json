@@ -1,0 +1,89 @@
+{
+	"name": "betterfilepath",
+    "author": {
+        "name": "Fallever"
+    },
+    "repository": {
+        "type":"git",
+        "url": ""
+    },
+	"displayName": "BetterFilePath",
+	"description": "better copy path",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.53.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        "onStartupFinished"
+    ],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+            {
+                "command": "extension.copyRelativeFilePath",
+                "title": "复制相对路径(better)"
+            }
+		],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "extension.copyRelativeFilePath",
+                    "when": "never"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extension.copyRelativeFilePath",
+                    "when": "explorerResourceIsFolder == false",
+                    "group": "6_copypath@999"
+                }
+            ]
+        },
+        "keybindings":[
+            {
+                "command": "extension.copyRelativeFilePath",
+                "key": "shift+alt+c"
+            }
+        ],
+        "configuration":[
+            {
+                "title": "betterfilepath",
+                "properties": {
+                    "betterpath.packagepath":{
+                        "type":"string",
+                        "scope":"resource",
+                        "description": "将忽略的路径",
+                        "default":""
+                    },
+                    "betterpath.ignoreextension":{
+                        "type":"boolean",
+                        "scope": "resource",
+                        "description":"忽略扩展名",
+                        "default":true
+                    }
+                }
+            }
+        ]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.53.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"tslint": "^5.12.1",
+		"vscode-test": "^1.0.2"
+	}
+}
