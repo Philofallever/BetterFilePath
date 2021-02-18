@@ -38,8 +38,7 @@
             "explorer/context": [
                 {
                     "command": "extension.copyRelativeFilePath",
-                    "when": "explorerResourceIsFolder == false",
-                    "group": "6_copypath@20"
+                    "group": "6_copypath@30"
                 }
             ]
         },
