@@ -3,6 +3,7 @@
     "author": {
         "name": "Fallever"
     },
+    "icon": "icons/icon.jpg",
     "publisher": "Fallever",
     "repository": {
         "type":"git",
