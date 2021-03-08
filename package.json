@@ -10,7 +10,7 @@
     },
 	"displayName": "BetterFilePathCopy",
 	"description": "better copy file path",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -26,6 +26,10 @@
             {
                 "command": "extension.copyRelativeFilePath",
                 "title": "复制相对路径(better)"
+            },
+            {
+                "command": "extension.copyName",
+                "title": "复制名称(bettler)"
             }
 		],
         "menus": {
@@ -33,18 +37,27 @@
                 {
                     "command": "extension.copyRelativeFilePath",
                     "when": "never"
+                },
+                {
+                    "command": "extension.copyName",
+                    "when": "never"
                 }
             ],
             "explorer/context": [
                 {
                     "command": "extension.copyRelativeFilePath",
                     "group": "6_copypath@30"
+                },
+                {
+                    "command": "extension.copyName",
+                    "group": "6_copypath@31"
                 }
             ]
         },
         "keybindings":[
             {
                 "command": "extension.copyRelativeFilePath",
+                "when": "!editorFocus",
                 "key": "shift+alt+c"
             }
         ],

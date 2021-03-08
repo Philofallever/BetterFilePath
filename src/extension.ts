@@ -1,9 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { env, version } from 'process';
 import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
 
-//test.lua
 async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
 {
     await vscode.commands.executeCommand("copyRelativeFilePath");
@@ -25,13 +25,33 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
             ignoreExtension = ignoreExtension as boolean;
             if (ignoreExtension)
             {
-                path = path.replace(/\.\w+/g,"")
+                path = path.replace(/\.\w+/g, "")
             }
         }
         vscode.env.clipboard.writeText(path);
         vscode.window.showInformationMessage(`复制成功! ${path}`);
     }
 }
+
+async function copyName(uri: vscode.Uri): Promise<void>
+{
+    let name: string = "";
+    if (uri !== undefined)
+    {
+        let ext: string = "";
+        console.log(uri.fsPath);
+        console.log(uri.path);
+        let stat = fs.lstatSync(uri.fsPath);
+        if (stat.isFile())
+            ext = path.extname(uri.fsPath);
+
+        name = path.basename(uri.fsPath, ext);
+        vscode.window.showInformationMessage(`复制成功! ${name}`);
+    }
+
+    vscode.env.clipboard.writeText(name);
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext)
@@ -55,6 +75,8 @@ export function activate(context: vscode.ExtensionContext)
     // context.subscriptions.push(disposable);
 
     let cmd = vscode.commands.registerCommand('extension.copyRelativeFilePath', (uri) => copyRelativeFilePath(uri));
+    context.subscriptions.push(cmd);
+    cmd = vscode.commands.registerCommand('extension.copyName', (uri) => copyName(uri));
     context.subscriptions.push(cmd);
 }
 
