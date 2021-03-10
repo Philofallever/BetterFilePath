@@ -29,7 +29,7 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
 
         fsPath = fsPath.replace(/\\/g, '/'); // 路径分隔符
 
-        let subPath = config.get("lua.packagepath");
+        let subPath = config.get("packagepath");
         if (subPath !== undefined)
         {
             let repl = subPath as string;
