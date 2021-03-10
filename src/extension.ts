@@ -6,30 +6,34 @@ import * as fs from 'fs';
 
 async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
 {
-    await vscode.commands.executeCommand("copyRelativeFilePath");
-    let path = await vscode.env.clipboard.readText();
-    if (path !== undefined)
+    let fsPath = uri?.fsPath ?? vscode.window.activeTextEditor?.document.uri.fsPath;
+    if (fsPath !== undefined)
     {
-        path = path.replace(/\\/g, '/');
         let config = vscode.workspace.getConfiguration("betterpath");
+
+        let ignoreExtension = config.get('ignoreextension');
+        if (ignoreExtension !== undefined && ignoreExtension as boolean)
+        {
+            let stat = await fs.promises.lstat(fsPath);
+            if (stat.isFile())
+                fsPath = fsPath.replace(path.extname(fsPath), "");
+        }
+
+        if (vscode.workspace.rootPath)
+            fsPath = fsPath.replace(vscode.workspace.rootPath + path.sep, "")
+
+
+        fsPath = fsPath.replace(/\\/g, '/'); // 路径分隔符
+
         let subPath = config.get("packagepath");
         if (subPath !== undefined)
         {
             let repl = subPath as string;
-            path = path.replace(repl, "");
+            fsPath = fsPath.replace(repl, "");
         }
 
-        let ignoreExtension = config.get('ignoreextension');
-        if (ignoreExtension !== undefined)
-        {
-            ignoreExtension = ignoreExtension as boolean;
-            if (ignoreExtension)
-            {
-                path = path.replace(/\.\w+/g, "")
-            }
-        }
-        vscode.env.clipboard.writeText(path);
-        vscode.window.showInformationMessage(`复制成功! ${path}`);
+        vscode.env.clipboard.writeText(fsPath);
+        vscode.window.showInformationMessage(`复制成功! ${fsPath}`);
     }
 }
 
@@ -39,8 +43,6 @@ async function copyName(uri: vscode.Uri): Promise<void>
     if (uri !== undefined)
     {
         let ext: string = "";
-        console.log(uri.fsPath);
-        console.log(uri.path);
         let stat = fs.lstatSync(uri.fsPath);
         if (stat.isFile())
             ext = path.extname(uri.fsPath);
