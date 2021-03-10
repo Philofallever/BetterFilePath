@@ -12,11 +12,15 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
         let config = vscode.workspace.getConfiguration("betterpath");
 
         let ignoreExtension = config.get('ignoreextension');
+        let isLua = false;
         if (ignoreExtension !== undefined && ignoreExtension as boolean)
         {
             let stat = await fs.promises.lstat(fsPath);
             if (stat.isFile())
+            {
+                isLua = path.extname(fsPath) === ".lua";
                 fsPath = fsPath.replace(path.extname(fsPath), "");
+            }
         }
 
         if (vscode.workspace.rootPath)
@@ -25,13 +29,14 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
 
         fsPath = fsPath.replace(/\\/g, '/'); // 路径分隔符
 
-        let subPath = config.get("packagepath");
+        let subPath = config.get("lua.packagepath");
         if (subPath !== undefined)
         {
             let repl = subPath as string;
             fsPath = fsPath.replace(repl, "");
         }
 
+        fsPath = fsPath.replace(/\//g,'.');
         vscode.env.clipboard.writeText(fsPath);
         vscode.window.showInformationMessage(`复制成功! ${fsPath}`);
     }
