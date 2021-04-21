@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
+async function copyRelativeFilePath(uri: vscode.Uri, repl: string | undefined): Promise<void>
 {
     let fsPath = uri?.fsPath ?? vscode.window.activeTextEditor?.document.uri.fsPath;
     if (fsPath !== undefined)
@@ -36,7 +36,8 @@ async function copyRelativeFilePath(uri: vscode.Uri): Promise<void>
             fsPath = fsPath.replace(repl, "");
         }
 
-        fsPath = fsPath.replace(/\//g,'.');
+        if (repl !== undefined)
+            fsPath = fsPath.replace(/\//g, repl);
         vscode.env.clipboard.writeText(fsPath);
         vscode.window.showInformationMessage(`复制成功! ${fsPath}`);
     }
@@ -58,6 +59,7 @@ async function copyName(uri: vscode.Uri): Promise<void>
 
     vscode.env.clipboard.writeText(name);
 }
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -81,8 +83,10 @@ export function activate(context: vscode.ExtensionContext)
 
     // context.subscriptions.push(disposable);
 
-    let cmd = vscode.commands.registerCommand('extension.copyRelativeFilePath', (uri) => copyRelativeFilePath(uri));
+    let cmd = vscode.commands.registerCommand('extension.copyRelativeFilePath', (uri) => copyRelativeFilePath(uri, undefined));
     context.subscriptions.push(cmd);
+    cmd = vscode.commands.registerCommand('extension.copyPackagePath', (uri) => copyRelativeFilePath(uri, "."))
+
     cmd = vscode.commands.registerCommand('extension.copyName', (uri) => copyName(uri));
     context.subscriptions.push(cmd);
 }
